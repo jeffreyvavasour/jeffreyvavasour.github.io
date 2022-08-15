@@ -311,7 +311,6 @@ const editNameConfirmBtn = document.querySelector('.edit-name-confirm-btn');
 const playerOneNames = document.querySelectorAll('.player-one-name');
 const playerTwoNames = document.querySelectorAll('.player-two-name');
 
-
 // EVENT LISTENERS
 // 301 button
 threeOOneBtn.addEventListener('click', function() {
@@ -616,7 +615,7 @@ quitMatchDenyBtn.addEventListener('click', function() {
 
 //submit
 submitBtn.addEventListener('click', function() {
-    
+
     let scoreInputValue;
 
     // do not allow impossible scores
@@ -954,6 +953,12 @@ submitBtn.addEventListener('click', function() {
                 }
             }
         }
+    }
+
+    if (playerOne.classList.contains('active')) {
+        quitMatchBtn.style.backgroundColor = 'hsl( var(--color-primary), 0.5 )';
+    } else {
+        quitMatchBtn.style.backgroundColor = 'hsl( var(--color-accent), 0.5 )';
     }
 })
 
