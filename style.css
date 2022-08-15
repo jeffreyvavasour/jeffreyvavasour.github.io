@@ -116,8 +116,16 @@ body {
 
 /* SECTIONS */
 /* game page */
+.quit-btn-div {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+}
+
 .scores {
-    height: 15%;
+    height: 35%;
 }
 .score {
     display: flex;
@@ -127,8 +135,14 @@ body {
 }
 
 .first-to {
-    margin: 1rem 0 0.5rem 0;
-    justify-content: space-around;
+    padding: 1rem 0 0.5rem 0;
+}
+.first-to-content {
+    background-color: hsl( var(--color-accent) );
+    width: fit-content;
+    margin-inline: auto;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
 }
 
 .info {
@@ -136,7 +150,7 @@ body {
 }
 
 .previous-scores-container {
-    height: 20%;
+    height: 30%;
     overflow: hidden;
     background-color: black;
 }
@@ -148,7 +162,8 @@ body {
 }
 
 .checkouts-container {
-    height: 80px;
+    height: 50px;
+    margin-top: 1rem;
 }
 .checkout-one,
 .checkout-two {
@@ -180,12 +195,15 @@ body {
 .key {
     border: 0.5px solid black;
 }
+.bust {
+    font-weight: bold;
+}
 
 .buttons {
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem 1rem 1rem
+    padding: 1rem;
 }
 
 /* home page */
@@ -267,6 +285,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+}
+.player-name-div {
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    width: 200px;
 }
 
 .start-game {
@@ -409,6 +434,23 @@ button:hover {
     
 } */
 
+.edit-name-btn {
+  background: transparent;
+  border-color: transparent;
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 0;
+  margin-left: 1rem;
+  /* transition: var(--transition); */
+}
+.edit-name-btn {
+  color: lightgreen;
+}
+.edit-name-btn:hover {
+    background-color: transparent;
+  color: darkgreen;
+}
+
 .start-game-btn {
     width: 100%;
     height: 100%;
@@ -433,10 +475,19 @@ button:hover {
     border-radius: 50%;
 }
 
+.quit-btn {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: hsl( var(--color-primary), 0.5 );
+}
+
 .submit-btn {
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
 .modal-popup button {
@@ -454,7 +505,11 @@ button:hover {
     background-color: hsl( var(--color-accent) );
 }
 
-/* HIDDEN ELEMENT */
+/* HIDDEN ELEMENTs */
 .hidden {
     display: none;
+}
+
+.invisible {
+    visibility: hidden;
 }
