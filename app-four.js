@@ -255,6 +255,9 @@ let playerTwoOneHundredPlus = 0;
 let playerTwoOneFortyPlus = 0;
 let playerTwoOneEightys = 0;
 
+// GLOBAL NAME TO EDIT
+let nameToEdit = '';
+
 // SELECTORS
 const playerOneScoreValue = document.querySelector('.player-one-score');
 const playerTwoScoreValue = document.querySelector('.player-two-score');
@@ -297,10 +300,17 @@ const numberOfDartsPage = document.querySelector('.number-of-darts-page');
 const numberOfDartsBtns = document.querySelectorAll('.number-of-darts');
 const invalidInputPage = document.querySelector('.invalid-input-page');
 const invalidInputBtn = document.querySelector('.invalid-input-btn');
-const quitMatchBtn = document.querySelector('.quit-match-btn');
+const quitMatchBtn = document.querySelector('.quit-btn');
 const quitMatchConfirmBtn = document.querySelector('.quit-match-confirm-btn');
 const quitMatchDenyBtn = document.querySelector('.quit-match-deny-btn');
 const areYouSurePage = document.querySelector('.are-you-sure-page');
+const editBtns = document.querySelectorAll('.edit-name-btn');
+const editNamePage = document.querySelector('.edit-name-page');
+const editNameInput = document.querySelector('.edit-name-input');
+const editNameConfirmBtn = document.querySelector('.edit-name-confirm-btn');
+const playerOneNames = document.querySelectorAll('.player-one-name');
+const playerTwoNames = document.querySelectorAll('.player-two-name');
+
 
 // EVENT LISTENERS
 // 301 button
@@ -349,6 +359,33 @@ setBtns.forEach(btn => {
             numberOfSetsValue.textContent = numberOfSets;
         }
     })
+})
+
+// edit buttons
+editBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        nameToEdit = e.currentTarget.id;
+        editNamePage.classList.remove('hidden');
+        console.log(nameToEdit);
+    })
+})
+
+// edit name submit button
+editNameConfirmBtn.addEventListener('click', function() {
+    if (nameToEdit === 'edit-name-player-one-btn') {
+        playerOneNames.forEach(name => {
+            name.textContent = editNameInput.value;
+        })
+        editNamePage.classList.add('hidden');
+        editNameInput.value = '';
+    }
+    if (nameToEdit === 'edit-name-player-two-btn') {
+        playerTwoNames.forEach(name => {
+            name.textContent = editNameInput.value;
+        })
+        editNamePage.classList.add('hidden');
+        editNameInput.value = '';
+    }
 })
 
 // start game button
@@ -426,7 +463,7 @@ bustBtn.addEventListener('click', function() {
         ///////// ADD TOTAL DARTS ///////////
         playerOneDartsTotal += 3;
         playerOneDartsTotalInLeg +=3;
-        dartsInLegOne.textContent = playerOneDartsTotalInLeg;
+        // dartsInLegOne.textContent = playerOneDartsTotalInLeg;
 
         ///////// RESET SCORE INPUT VALUE ///////////
         scoreInput.textContent = '';
@@ -446,7 +483,7 @@ bustBtn.addEventListener('click', function() {
         ///////// ADD TOTAL DARTS ///////////
         playerTwoDartsTotal += 3;
         playerTwoDartsTotalInLeg +=3;
-        dartsInLegTwo.textContent = playerTwoDartsTotalInLeg;
+        // dartsInLegTwo.textContent = playerTwoDartsTotalInLeg;
 
         ///////// RESET SCORE INPUT VALUE ///////////
         scoreInput.textContent = '';
@@ -474,7 +511,7 @@ gameStatsBtn.addEventListener('click', function() {
                                 </button>
                                 <h2 class="stats-heading">Statistics</h2>
                             </header>
-                            <h3 class="stats-player-heading stats-player-one-heading">Player 1</h3>
+                            <h3 class="stats-player-heading stats-player-one-heading">${playerOneNames[0].textContent}</h3>
                             <ul class="player-stats">
                                 <li class="player-stat flex">
                                     <p>Throws:</p>
@@ -509,7 +546,7 @@ gameStatsBtn.addEventListener('click', function() {
                                     <p class="stat">${playerOneOneEightys}</p>
                                 </li>
                             </ul>
-                            <h3 class="stats-player-heading stats-player-two-heading">Player 2</h3>
+                            <h3 class="stats-player-heading stats-player-two-heading">${playerTwoNames[0].textContent}</h3>
                             <ul class="player-stats">
                                 <li class="player-stat flex">
                                     <p>Throws:</p>
@@ -674,7 +711,7 @@ submitBtn.addEventListener('click', function() {
         // add total darts thrown
         playerOneDartsTotal += 3;
         playerOneDartsTotalInLeg += 3;
-        dartsInLegOne.textContent = playerOneDartsTotalInLeg;
+        // dartsInLegOne.textContent = playerOneDartsTotalInLeg;
 
 
         /////////
@@ -718,7 +755,7 @@ submitBtn.addEventListener('click', function() {
 
                     numberOfDartsPage.classList.remove('hidden');
                     gameOverPage.classList.remove('hidden');
-                    winnerMessage.textContent = 'Player 1 Wins!';
+                    winnerMessage.textContent = `${playerOneNames[0].textContent} wins!`;
 
                     setStats(playerOneScoreList, playerTwoScoreList);
                 }
@@ -730,7 +767,7 @@ submitBtn.addEventListener('click', function() {
 
                 numberOfDartsPage.classList.remove('hidden');
                 gameOverPage.classList.remove('hidden');
-                winnerMessage.textContent = 'Player 1 Wins!';
+                winnerMessage.textContent = `${playerOneNames[0].textContent} wins!`;
 
                 setStats(playerOneScoreList, playerTwoScoreList);
 
@@ -834,7 +871,7 @@ submitBtn.addEventListener('click', function() {
         // add total darts thrown
         playerTwoDartsTotal += 3;
         playerTwoDartsTotalInLeg += 3;
-        dartsInLegTwo.textContent = playerTwoDartsTotalInLeg;
+        // dartsInLegTwo.textContent = playerTwoDartsTotalInLeg;
 
         /////////
         ///////// DEALING WITH WHEN 0 IS REACHED ///////////
@@ -876,7 +913,7 @@ submitBtn.addEventListener('click', function() {
 
                     numberOfDartsPage.classList.remove('hidden');
                     gameOverPage.classList.remove('hidden');
-                    winnerMessage.textContent = 'Player 2 Wins!';
+                    winnerMessage.textContent = `${playerTwoNames[0].textContent} wins!`;
 
                     setStats(playerOneScoreList, playerTwoScoreList);
                 }
@@ -888,7 +925,7 @@ submitBtn.addEventListener('click', function() {
 
                 numberOfDartsPage.classList.remove('hidden');
                 gameOverPage.classList.remove('hidden');
-                winnerMessage.textContent = 'Player 2 Wins!';
+                winnerMessage.textContent = `${playerTwoNames[0].textContent} wins!`;
 
                 setStats(playerOneScoreList, playerTwoScoreList);
 
@@ -960,12 +997,12 @@ function newGame() {
 
     playerOneScoreValue.textContent = pointsPicked;
     turnAvgOne.textContent = 0;
-    dartsInLegOne.textContent = 0;
+    // dartsInLegOne.textContent = 0;
     checkoutOne.textContent = '';
 
     playerTwoScoreValue.textContent = pointsPicked;
     turnAvgTwo.textContent = 0;
-    dartsInLegTwo.textContent = 0;
+    // dartsInLegTwo.textContent = 0;
     checkoutTwo.textContent = '';
 
     playerOneLegs = 0;
@@ -996,8 +1033,8 @@ function resetLeg() {
 
     playerOneDartsTotalInLeg = 0;
     playerTwoDartsTotalInLeg = 0;
-    dartsInLegOne.textContent = 0;
-    dartsInLegTwo.textContent = 0;
+    // dartsInLegOne.textContent = 0;
+    // dartsInLegTwo.textContent = 0;
 
     previousScores.innerHTML = '';
     checkoutOne.textContent = '';
