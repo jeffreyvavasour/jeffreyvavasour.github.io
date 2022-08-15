@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Darts App</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Open+Sans&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body class="flex-col">
@@ -43,8 +43,18 @@
         </div>
         <div class="participants">
             <h4>Participants</h4>
-            <p class="fs-small">Player 1</p>
-            <p class="fs-small">Player 2</p>
+            <div class="player-name-div flex">
+                <p class="player-one-name fs-small">Player 1</p>
+                <button class="edit-name-btn" id="edit-name-player-one-btn">
+                    <i class="fa fa-edit"></i>
+                </button>
+            </div>
+            <div class="player-name-div flex">
+                <p class="player-two-name fs-small">Player 2</p>
+                <button class="edit-name-btn" id="edit-name-player-two-btn">
+                    <i class="fa fa-edit"></i>
+                </button>
+            </div>
         </div>
         <div class="start-game">
             <button class="start-game-btn">Start</button>
@@ -52,14 +62,18 @@
     </div>
 
     <!-- GAME PAGE -->
+        <!-- quit button -->
+        <div class="quit-btn-div">
+            <button class="quit-btn">X</button>
+        </div>
         <!-- scores -->
         <div class="scores flex">
             <div class="score player-one center-item even-cols active">
-                <h4 class="player-one-heading fs-xxsmall">Player 1</h4>
+                <h4 class="player-one-heading player-one-name fs-xxsmall">Player 1</h4>
                 <p class="player-one-score fs-xlarge">501</p>
             </div>
             <div class="score player-two center-item even-cols">
-                <h4 class="player-two-heading fs-xxsmall">Player 2</h4>
+                <h4 class="player-two-heading player-two-name fs-xxsmall">Player 2</h4>
                 <p class="player-two-score fs-xlarge">501</p>
             </div>
         </div>
@@ -67,15 +81,22 @@
         <div class="info">
             <!-- first to -->
             <div class="first-to">
-                <!-- first to amount legs -->
+                <div class="first-to-content flex">
+                    <p class="fs-xxsmall">First to: Sets <span class="first-to-amount-sets">3</span> /&nbsp</p>
+                    <p class="fs-xxsmall"> Legs <span class="first-to-amount-legs">3</span></p>
+                </div>
+            </div>
+            <!-- first to
+            <div class="first-to flex">
+                first to amount legs
                 <div class="first-to-container center-item">
                     <p class="fs-xxsmall">First to: <span class="first-to-amount-legs">3</span> (Legs)</p>
                 </div>
-                <!-- first to amount sets -->
+                first to amount sets
                 <div class="first-to-container center-item">
                     <p class="fs-xxsmall">First to: <span class="first-to-amount-sets">3</span> (Sets)</p>
                 </div>
-            </div>
+            </div> -->
             <!-- turn average -->
             <div class="turn-average-container flex">
                 <div class="turn-average even-cols center-item">
@@ -86,32 +107,32 @@
                 </div>
             </div>
             <!-- darts in leg -->
-            <div class="darts-in-leg-container flex">
+            <!-- <div class="darts-in-leg-container flex">
                 <div class="darts-in-leg even-cols center-item">
                     <p class="fs-xxsmall">Darts In Leg: <span class="darts-in-leg-one">0</span></p>
                 </div>
                 <div class="darts-in-leg even-cols center-item">
                     <p class="fs-xxsmall">Darts In Leg: <span class="darts-in-leg-two">0</span></p>
                 </div>
-            </div>
+            </div> -->
             <!-- number of legs won -->
             <div class="legs-won-container flex">
                 <div class="legs-won even-cols center-item">
-                    <p class="fs-xxsmall">Legs Won: <span class="legs-won-one">0</span></p>
+                    <p class="fs-xxsmall"><span class="sets-won-one">0</span> Sets -&nbsp<span class="legs-won-one">0</span> Legs</p>
                 </div>
                 <div class="legs-won even-cols center-item">
-                    <p class="fs-xxsmall">Legs Won: <span class="legs-won-two">0</span></p>
+                    <p class="fs-xxsmall"><span class="sets-won-two">0</span> Sets -&nbsp<span class="legs-won-two">0</span> Legs</p>
                 </div>
             </div>
             <!-- number of sets won -->
-            <div class="sets-won-container flex">
+            <!-- <div class="sets-won-container flex">
                 <div class="sets-won even-cols center-item">
                     <p class="fs-xxsmall">Sets Won: <span class="sets-won-one">0</span></p>
                 </div>
                 <div class="sets-won even-cols center-item">
                     <p class="fs-xxsmall">Sets Won: <span class="sets-won-two">0</span></p>
                 </div>
-            </div>
+            </div> -->
         </div>
         <!-- previous scores -->
         <div class="previous-scores-container flex">
@@ -131,7 +152,7 @@
             <!-- buttons && score input -->
             <div class="buttons flex">
                 <!-- quit match button -->
-                <div class="quit-match-btn-section grid center-item">
+                <div class="quit-match-btn-section grid center-item invisible">
                     <button class="quit-match-btn">Quit</button>
                 </div>
                 <!-- score input -->
@@ -144,21 +165,24 @@
                 </div>
             </div>
         </div>
+        <!-- container keys -->
         <div class="container-keys">
             <!-- keypad -->
             <div class="keys grid">
-                <button class="key number center-item">7</button>
-                <button class="key number center-item">8</button>
-                <button class="key number center-item">9</button>
-                <button class="key number center-item">4</button>
-                <button class="key number center-item">5</button>
-                <button class="key number center-item">6</button>
                 <button class="key number center-item">1</button>
                 <button class="key number center-item">2</button>
                 <button class="key number center-item">3</button>
+                <button class="key number center-item">4</button>
+                <button class="key number center-item">5</button>
+                <button class="key number center-item">6</button>
+                <button class="key number center-item">7</button>
+                <button class="key number center-item">8</button>
+                <button class="key number center-item">9</button>
                 <button class="key bust center-item">Bust</button>
                 <button class="key number center-item">0</button>
-                <button class="key backspace center-item">X</button>
+                <button class="key backspace center-item">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
             </div>
         </div>
     
@@ -211,6 +235,17 @@
     <!-- STATISTICS PAGE -->
     <div class="stats-page hidden">
         
+    </div>
+
+    <!-- EDIT NAME PAGE -->
+    <div class="edit-name-page modal hidden">
+        <div class="edit-name-page-popup modal-popup">
+            <div class="modal-content">
+                <h4>Add Player Name</h4>
+                <input type="text" class="edit-name-input" maxlength="12">
+                <button class="edit-name-confirm-btn">SUBMIT</button>
+            </div>
+        </div>
     </div>
     
     <script src="app-four.js"></script>
