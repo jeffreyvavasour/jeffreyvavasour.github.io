@@ -390,7 +390,7 @@ editNameConfirmBtn.addEventListener('click', function() {
 // start game button
 startGameBtn.addEventListener('click', function() {
     homePage.classList.add('hidden');
-
+    quitBtnBgColor();
     firstToAmountLegs.textContent = numberOfLegs;
     firstToAmountSets.textContent = numberOfSets;
 })
@@ -490,6 +490,8 @@ bustBtn.addEventListener('click', function() {
 
     playerOne.classList.toggle('active');
     playerTwo.classList.toggle('active');
+
+    quitBtnBgColor();
 })
 
 //game stats button
@@ -589,7 +591,10 @@ gameStatsBtn.addEventListener('click', function() {
 })
 
 //play again button
-playAgainBtn.addEventListener('click', newGame);
+playAgainBtn.addEventListener('click', function() {
+    newGame();
+    quitBtnBgColor();
+});
 
 //invalid input button
 invalidInputBtn.addEventListener('click', function() {
@@ -955,11 +960,14 @@ submitBtn.addEventListener('click', function() {
         }
     }
 
-    if (playerOne.classList.contains('active')) {
-        quitMatchBtn.style.backgroundColor = 'hsl( var(--color-primary), 0.5 )';
-    } else {
-        quitMatchBtn.style.backgroundColor = 'hsl( var(--color-accent), 0.5 )';
-    }
+    // change quit button background color when certain player active
+    quitBtnBgColor();
+
+    // if (playerOne.classList.contains('active')) {
+    //     quitMatchBtn.style.backgroundColor = 'hsl( var(--color-primary), 0.5 )';
+    // } else {
+    //     quitMatchBtn.style.backgroundColor = 'hsl( var(--color-accent), 0.5 )';
+    // }
 })
 
 // FUNCTIONS
@@ -1157,4 +1165,12 @@ function setStats(playerOneScoreList, playerTwoScoreList) {
             playerTwoOneEightys++;
         }
     })
+}
+
+function quitBtnBgColor() {
+    if (playerOne.classList.contains('active')) {
+        quitMatchBtn.style.backgroundColor = 'hsl( var(--color-primary), 0.5 )';
+    } else {
+        quitMatchBtn.style.backgroundColor = 'hsl( var(--color-accent), 0.5 )';
+    }
 }
