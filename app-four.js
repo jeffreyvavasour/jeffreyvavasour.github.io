@@ -312,52 +312,22 @@ const playerOneNames = document.querySelectorAll('.player-one-name');
 const playerTwoNames = document.querySelectorAll('.player-two-name');
 
 // EVENT LISTENERS
+
 // 301 button
-threeOOneBtn.addEventListener('click', function() {
-    pointsPicked = 301;
-    playerOneScore = pointsPicked;
-    playerTwoScore = pointsPicked;
-    homePageScore.textContent = `${pointsPicked}`;
-    playerOneScoreValue.textContent = `${pointsPicked}`;
-    playerTwoScoreValue.textContent = `${pointsPicked}`;
-})
+threeOOneBtn.addEventListener('click', setPoints);
 
 // 501 button
-fiveOOneBtn.addEventListener('click', function() {
-    pointsPicked = 501;
-    playerOneScore = pointsPicked;
-    playerTwoScore = pointsPicked;
-    homePageScore.textContent = `${pointsPicked}`;
-    playerOneScoreValue.textContent = `${pointsPicked}`;
-    playerTwoScoreValue.textContent = `${pointsPicked}`;
-})
+fiveOOneBtn.addEventListener('click', setPoints);
+
 
 // leg buttons
 legBtns.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        if (e.currentTarget.classList.contains('add')) {
-            numberOfLegs++;
-            numberOfLegsValue.textContent = numberOfLegs;
-        } else {
-            if (numberOfLegs === 1) return;
-            numberOfLegs--;
-            numberOfLegsValue.textContent = numberOfLegs;
-        }
-    })
+    btn.addEventListener('click', setLegs);
 })
 
 // set buttons
 setBtns.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        if (e.currentTarget.classList.contains('add')) {
-            numberOfSets++;
-            numberOfSetsValue.textContent = numberOfSets;
-        } else {
-            if (numberOfSets === 1) return;
-            numberOfSets--;
-            numberOfSetsValue.textContent = numberOfSets;
-        }
-    })
+    btn.addEventListener('click', setSets);
 })
 
 // edit buttons
@@ -365,35 +335,14 @@ editBtns.forEach(btn => {
     btn.addEventListener('click', function(e) {
         nameToEdit = e.currentTarget.id;
         editNamePage.classList.remove('hidden');
-        console.log(nameToEdit);
     })
 })
 
 // edit name submit button
-editNameConfirmBtn.addEventListener('click', function() {
-    if (nameToEdit === 'edit-name-player-one-btn') {
-        playerOneNames.forEach(name => {
-            name.textContent = editNameInput.value;
-        })
-        editNamePage.classList.add('hidden');
-        editNameInput.value = '';
-    }
-    if (nameToEdit === 'edit-name-player-two-btn') {
-        playerTwoNames.forEach(name => {
-            name.textContent = editNameInput.value;
-        })
-        editNamePage.classList.add('hidden');
-        editNameInput.value = '';
-    }
-})
+editNameConfirmBtn.addEventListener('click', setName);
 
 // start game button
-startGameBtn.addEventListener('click', function() {
-    homePage.classList.add('hidden');
-    quitBtnBgColor();
-    firstToAmountLegs.textContent = numberOfLegs;
-    firstToAmountSets.textContent = numberOfSets;
-})
+startGameBtn.addEventListener('click', startGame);
 
 // home button
 homeBtn.addEventListener('click', function() {
@@ -446,62 +395,358 @@ backspaceBtn.addEventListener('click', function() {
 })
 
 //bust
-bustBtn.addEventListener('click', function() {
+bustBtn.addEventListener('click', bust);
+
+//game stats button
+gameStatsBtn.addEventListener('click', function() {
+
+    // show stats page
+    statsPage.classList.remove('hidden');
+
+    // set stats page html
+    setStatsPageHtml();
+
+    //game stats button close
+    const closeStatsBtn = document.querySelector('.close-stats-btn');
+    closeStatsBtn.addEventListener('click', function() {
+        statsPage.classList.add('hidden');
+    })
+})
+
+//play again button
+playAgainBtn.addEventListener('click', function() {
+    newGame();
+    quitBtnBgColor();
+});
+
+//invalid input button
+invalidInputBtn.addEventListener('click', function() {
+    invalidInputPage.classList.add('hidden');
+});
+
+//quit match button
+quitMatchBtn.addEventListener('click', function() {
+    areYouSurePage.classList.remove('hidden');
+})
+
+//quit match confirm button
+quitMatchConfirmBtn.addEventListener('click', function() {
+    newGame();
+    areYouSurePage.classList.add('hidden');
+    homePage.classList.remove('hidden');
+})
+
+//quit match deny button
+quitMatchDenyBtn.addEventListener('click', function() {
+    areYouSurePage.classList.add('hidden');
+})
+
+//submit
+submitBtn.addEventListener('click', function() {
+
+    let scoreInputValue;
+
+    // do not allow impossible scores
+    for (let i = 0; i < impossibleScores.length; i++) {
+        if (parseInt(scoreInput.textContent) > 180 || parseInt(scoreInput.textContent) === impossibleScores[i]) {
+            scoreInput.textContent = '';
+            invalidInputPage.classList.remove('hidden');
+            return;
+        }
+    }
+
+    // do not allow empty input
+    // &&
+    // sets scoreInputValue
+    if (scoreInput.textContent.length === 0) {
+        invalidInputPage.classList.remove('hidden');
+        return;
+    } else {
+        scoreInputValue = parseInt(scoreInput.textContent);
+    }
+
+    /////////
+    ///////// CHANGE SCORES WHEN PLAYER 1 ACTIVE ///////////
+    /////////
     if (playerOne.classList.contains('active')) {
 
-        ///////// PREVIOUS SCORES PRODUCTION ///////////
-        previousScores.innerHTML = '';
-        playerOneScoreList.unshift(0);
-        playerOneScoreListInLeg.unshift(0);
-        previousScoresProducer(playerOneScoreListInLeg, playerTwoScoreListInLeg);
+        // do not allow impossible finishes
+        for (let i = 0; i < impossibleFinishes.length; i++) {
+            if (parseInt(scoreInput.textContent) === impossibleFinishes[i] && playerOneScore < 170) {
+                scoreInput.textContent = '';
+                invalidInputPage.classList.remove('hidden');
+                return;
+            }
+        }
+        // do not allow minus global score
+        if (playerOneScore - parseInt(scoreInput.textContent) < 0) {
+            scoreInput.textContent = '';
+            invalidInputPage.classList.remove('hidden');
+            return;
+        }
+        // do not allow 1 remaining global score
+        if (playerOneScore - parseInt(scoreInput.textContent) === 1) {
+            scoreInput.textContent = '';
+            invalidInputPage.classList.remove('hidden');
+            return;
+        }
 
+        // reset previous scores container html
+        previousScores.innerHTML = '';
+
+        // calculate remaining score
+        const newScore = playerOneScore - scoreInputValue;
+        const screenScore = playerOne.querySelector('p');
+        // change score on screen
+        screenScore.textContent = newScore;
+        // change score in global variable
+        playerOneScore = newScore;
+        // toggle active class
+        playerOne.classList.toggle('active');
+        playerTwo.classList.toggle('active');
+        // reset score input value
+        scoreInput.textContent = '';
+
+
+        ///////// PREVIOUS SCORES PRODUCTION ///////////
+        playerOneScoreList.unshift(scoreInputValue);
+        playerOneScoreListInLeg.unshift(scoreInputValue);
+        previousScoresProducer(playerOneScoreListInLeg, playerTwoScoreListInLeg);      
+        
         ///////// AVERAGE SCORE PRODUCTION ///////////
         setAverage(playerOneScoreList, turnAvgOne);
         playerOneAverage = average;
 
-        ///////// ADD TOTAL DARTS ///////////
-        playerOneDartsTotal += 3;
-        playerOneDartsTotalInLeg +=3;
-        // dartsInLegOne.textContent = playerOneDartsTotalInLeg;
+        ///////// POSSIBLE CHECKOUTS CONTAINER PRODUCTION ///////////
+        bestPossibleCheckout(playerOneScore, checkoutOne);        
 
-        ///////// RESET SCORE INPUT VALUE ///////////
+        // add total darts thrown
+        playerOneDartsTotal += 3;
+        playerOneDartsTotalInLeg += 3;
+
+        ///////// DEALING WITH WHEN 0 IS REACHED ///////////
+        if (playerOneScore === 0) {
+
+            playerOneLegs++;
+            playerOneLegsTotal.textContent = playerOneLegs;
+            legsTotalAmount++;
+            legsTotalAmountInSet++;
+
+            ///////// accounting for sets ///////////
+            if (playerOneLegs === numberOfLegs && numberOfSets > 1) {
+                setsTotalAmount++;
+                playerOneSets++;
+                playerOneSetsTotal.textContent = playerOneSets;
+                playerOneLegs = 0;
+                playerOneLegsTotal.textContent = 0;
+                playerTwoLegs = 0;
+                playerTwoLegsTotal.textContent = 0;
+                resetLeg();
+                numberOfDartsPage.classList.remove('hidden');
+                gameOverPage.classList.add('hidden');
+
+                // players next turn
+                if (setsTotalAmount % 2 !== 0) {
+                    playerOne.classList.remove('active');
+                    playerTwo.classList.add('active');
+                } else {
+                    playerOne.classList.add('active');
+                    playerTwo.classList.remove('active');
+                }
+
+                legsTotalAmountInSet = 0;
+
+                // if total sets amount is reached
+                if (playerOneSets === numberOfSets) {
+
+                    numberOfDartsPage.classList.remove('hidden');
+                    gameOverPage.classList.remove('hidden');
+                    winnerMessage.textContent = `${playerOneNames[0].textContent} wins!`;
+
+                    setStats(playerOneScoreList, playerTwoScoreList);
+                }
+            }
+
+            ///////// accounting for legs ///////////
+            else if (playerOneLegs === numberOfLegs) {
+
+                numberOfDartsPage.classList.remove('hidden');
+                gameOverPage.classList.remove('hidden');
+                winnerMessage.textContent = `${playerOneNames[0].textContent} wins!`;
+
+                setStats(playerOneScoreList, playerTwoScoreList);
+
+            } else if (playerOneLegs !== numberOfLegs) {
+                numberOfDartsPage.classList.remove('hidden');
+                resetLeg();
+
+                // players next turn
+                if (setsTotalAmount % 2 === 0) {
+                    if (legsTotalAmountInSet % 2 !== 0) {
+                        playerOne.classList.remove('active');
+                        playerTwo.classList.add('active');
+                    } else {
+                        playerOne.classList.add('active');
+                        playerTwo.classList.remove('active');
+                    }
+                } else {
+                    if (legsTotalAmountInSet % 2 !== 0) {
+                        playerOne.classList.add('active');
+                        playerTwo.classList.remove('active');
+                    } else {
+                        playerOne.classList.remove('active');
+                        playerTwo.classList.add('active');
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    /////////
+    ///////// CHANGE SCORES WHEN PLAYER 2 ACTIVE ///////////
+    ///////// 
+    else if (playerTwo.classList.contains('active')) {
+
+        // do not allow impossible finishes
+        for (let i = 0; i < impossibleFinishes.length; i++) {
+            if (parseInt(scoreInput.textContent) === impossibleFinishes[i] && playerTwoScore < 170) {
+                scoreInput.textContent = '';
+                invalidInputPage.classList.remove('hidden');
+                return;
+            }
+        }
+        // do not allow minus global score
+        if (playerTwoScore - parseInt(scoreInput.textContent) < 0) {
+            scoreInput.textContent = '';
+            invalidInputPage.classList.remove('hidden');
+            return;
+        }
+        // do not allow 1 remaining global score
+        if (playerTwoScore - parseInt(scoreInput.textContent) === 1) {
+            scoreInput.textContent = '';
+            invalidInputPage.classList.remove('hidden');
+            return;
+        }
+
+        // reset previous scores container html
+        previousScores.innerHTML = '';
+        
+        // calculate remaining score
+        const screenScore = playerTwo.querySelector('p');
+        const newScore = playerTwoScore - scoreInputValue;
+        // change score on screen
+        screenScore.textContent = newScore;
+        // change score in global variable
+        playerTwoScore = newScore;
+        // toggle active class
+        playerOne.classList.toggle('active');
+        playerTwo.classList.toggle('active');
+        // reset score input
         scoreInput.textContent = '';
 
-    } else if (playerTwo.classList.contains('active')) {
 
         ///////// PREVIOUS SCORES PRODUCTION ///////////
-        previousScores.innerHTML = '';
-        playerTwoScoreList.unshift(0);
-        playerTwoScoreListInLeg.unshift(0);
+        playerTwoScoreList.unshift(scoreInputValue);
+        playerTwoScoreListInLeg.unshift(scoreInputValue);
         previousScoresProducer(playerOneScoreListInLeg, playerTwoScoreListInLeg);
 
         ///////// AVERAGE SCORE PRODUCTION ///////////
         setAverage(playerTwoScoreList, turnAvgTwo);
         playerTwoAverage = average;
+        
+        ///////// POSSIBLE CHECKOUTS CONTAINER PRODUCTION ///////////
+        bestPossibleCheckout(playerTwoScore, checkoutTwo); 
 
-        ///////// ADD TOTAL DARTS ///////////
+        // add total darts thrown
         playerTwoDartsTotal += 3;
-        playerTwoDartsTotalInLeg +=3;
-        // dartsInLegTwo.textContent = playerTwoDartsTotalInLeg;
+        playerTwoDartsTotalInLeg += 3;
 
-        ///////// RESET SCORE INPUT VALUE ///////////
-        scoreInput.textContent = '';
+        ///////// DEALING WITH WHEN 0 IS REACHED ///////////
+        if (playerTwoScore === 0) {
+
+            playerTwoLegs++;
+            playerTwoLegsTotal.textContent = playerTwoLegs;
+            legsTotalAmount++;
+            legsTotalAmountInSet++;
+
+            ///////// accounting for sets ///////////
+            if (playerTwoLegs === numberOfLegs && numberOfSets > 1) {
+                setsTotalAmount++;
+                playerTwoSets++;
+                playerTwoSetsTotal.textContent = playerTwoSets;
+                playerOneLegs = 0;
+                playerOneLegsTotal.textContent = 0;
+                playerTwoLegs = 0;
+                playerTwoLegsTotal.textContent = 0;
+                resetLeg();
+                numberOfDartsPage.classList.remove('hidden');
+                gameOverPage.classList.add('hidden');
+
+                if (setsTotalAmount % 2 !== 0) {
+                    playerOne.classList.remove('active');
+                    playerTwo.classList.add('active');
+                } else {
+                    playerOne.classList.add('active');
+                    playerTwo.classList.remove('active');
+                }
+
+                legsTotalAmountInSet = 0;
+
+                // if total sets amount is reached
+                if (playerTwoSets === numberOfSets) {
+
+                    numberOfDartsPage.classList.remove('hidden');
+                    gameOverPage.classList.remove('hidden');
+                    winnerMessage.textContent = `${playerTwoNames[0].textContent} wins!`;
+
+                    setStats(playerOneScoreList, playerTwoScoreList);
+                }
+            } 
+
+            ///////// accounting for legs ///////////
+            else if (playerTwoLegs === numberOfLegs) {
+
+                numberOfDartsPage.classList.remove('hidden');
+                gameOverPage.classList.remove('hidden');
+                winnerMessage.textContent = `${playerTwoNames[0].textContent} wins!`;
+
+                setStats(playerOneScoreList, playerTwoScoreList);
+
+            } else {
+                numberOfDartsPage.classList.remove('hidden');
+                resetLeg();
+
+                console.log(legsTotalAmount);
+
+                if (setsTotalAmount % 2 === 0) {
+                    if (legsTotalAmountInSet % 2 !== 0) {
+                        playerOne.classList.remove('active');
+                        playerTwo.classList.add('active');
+                    } else {
+                        playerOne.classList.add('active');
+                        playerTwo.classList.remove('active');
+                    }
+                } else {
+                    if (legsTotalAmountInSet % 2 !== 0) {
+                        playerOne.classList.add('active');
+                        playerTwo.classList.remove('active');
+                    } else {
+                        playerOne.classList.remove('active');
+                        playerTwo.classList.add('active');
+                    }
+                }
+            }
+        }
     }
 
-    playerOne.classList.toggle('active');
-    playerTwo.classList.toggle('active');
-
+    // change quit button background color when certain player active
     quitBtnBgColor();
 })
 
-//game stats button
-gameStatsBtn.addEventListener('click', function() {
-    console.log(playerOneAverage);
-    console.log(playerTwoAverage);
-    // show stats page
-    statsPage.classList.remove('hidden');
-
-    // set stats page html
+// FUNCTIONS
+function setStatsPageHtml() {
     let playerOneAvgDartsInLeg = playerOneDartsTotal / legsTotalAmount;
     let playerTwoAvgDartsInLeg = playerTwoDartsTotal / legsTotalAmount;
     playerOneAvgDartsInLeg = playerOneAvgDartsInLeg.toFixed(2);
@@ -582,395 +827,110 @@ gameStatsBtn.addEventListener('click', function() {
                                     <p class="stat">${playerTwoOneEightys}</p>
                                 </li>
                             </ul>`
+}
 
-    //game stats button close
-    const closeStatsBtn = document.querySelector('.close-stats-btn');
-    closeStatsBtn.addEventListener('click', function() {
-        statsPage.classList.add('hidden');
-    })
-})
+function bust() {
+    previousScores.innerHTML = '';
 
-//play again button
-playAgainBtn.addEventListener('click', function() {
-    newGame();
-    quitBtnBgColor();
-});
-
-//invalid input button
-invalidInputBtn.addEventListener('click', function() {
-    invalidInputPage.classList.add('hidden');
-});
-
-//quit match button
-quitMatchBtn.addEventListener('click', function() {
-    areYouSurePage.classList.remove('hidden');
-})
-
-//quit match confirm button
-quitMatchConfirmBtn.addEventListener('click', function() {
-    newGame();
-    areYouSurePage.classList.add('hidden');
-    homePage.classList.remove('hidden');
-})
-
-//quit match deny button
-quitMatchDenyBtn.addEventListener('click', function() {
-    areYouSurePage.classList.add('hidden');
-})
-
-//submit
-submitBtn.addEventListener('click', function() {
-
-    let scoreInputValue;
-
-    // do not allow impossible scores
-    for (let i = 0; i < impossibleScores.length; i++) {
-        if (parseInt(scoreInput.textContent) > 180 || parseInt(scoreInput.textContent) === impossibleScores[i]) {
-            scoreInput.textContent = '';
-            invalidInputPage.classList.remove('hidden');
-            return;
-        }
-    }
-
-    // do not allow empty input
-    // &&
-    // sets scoreInputValue
-    if (scoreInput.textContent.length === 0) {
-        invalidInputPage.classList.remove('hidden');
-        return;
-    } else {
-        scoreInputValue = parseInt(scoreInput.textContent);
-    }
-
-
-    /////////
-    ///////// CHANGE SCORES WHEN PLAYER 1 ACTIVE ///////////
-    /////////
     if (playerOne.classList.contains('active')) {
 
-        // do not allow impossible finishes
-        for (let i = 0; i < impossibleFinishes.length; i++) {
-            if (parseInt(scoreInput.textContent) === impossibleFinishes[i] && playerOneScore < 170) {
-                scoreInput.textContent = '';
-                invalidInputPage.classList.remove('hidden');
-                return;
-            }
-        }
-        // do not allow minus global score
-        if (playerOneScore - parseInt(scoreInput.textContent) < 0) {
-            scoreInput.textContent = '';
-            invalidInputPage.classList.remove('hidden');
-            return;
-        }
-        // do not allow 1 remaining global score
-        if (playerOneScore - parseInt(scoreInput.textContent) === 1) {
-            scoreInput.textContent = '';
-            invalidInputPage.classList.remove('hidden');
-            return;
-        }
-
-        // reset previous scores container html
-        previousScores.innerHTML = '';
-
-        // calculate remaining score
-        const newScore = playerOneScore - scoreInputValue;
-        const screenScore = playerOne.querySelector('p');
-        // change score on screen
-        screenScore.textContent = newScore;
-        // change score in global variable
-        playerOneScore = newScore;
-        // toggle active class
-        playerOne.classList.toggle('active');
-        playerTwo.classList.toggle('active');
-        // reset score input value
-        scoreInput.textContent = '';
-
-
-
-        /////////
         ///////// PREVIOUS SCORES PRODUCTION ///////////
-        /////////
-
-        // add score to score list array
-        playerOneScoreList.unshift(scoreInputValue);
-        playerOneScoreListInLeg.unshift(scoreInputValue);
-
-        previousScoresProducer(playerOneScoreListInLeg, playerTwoScoreListInLeg);      
-        
-
-        /////////
-        ///////// AVERAGE SCORE PRODUCTION ///////////
-        /////////
-
-        setAverage(playerOneScoreList, turnAvgOne);
-
-        playerOneAverage = average;
-
-
-        /////////
-        ///////// POSSIBLE CHECKOUTS CONTAINER PRODUCTION ///////////
-        /////////
-        bestPossibleCheckout(playerOneScore, checkoutOne);        
-
-        // add total darts thrown
-        playerOneDartsTotal += 3;
-        playerOneDartsTotalInLeg += 3;
-        // dartsInLegOne.textContent = playerOneDartsTotalInLeg;
-
-
-        /////////
-        ///////// DEALING WITH WHEN 0 IS REACHED ///////////
-        /////////
-        if (playerOneScore === 0) {
-
-            playerOneLegs++;
-            playerOneLegsTotal.textContent = playerOneLegs;
-            legsTotalAmount++;
-            legsTotalAmountInSet++;
-
-
-            /////////
-            ///////// accounting for sets ///////////
-            /////////
-            if (playerOneLegs === numberOfLegs && numberOfSets > 1) {
-                setsTotalAmount++;
-                playerOneSets++;
-                playerOneSetsTotal.textContent = playerOneSets;
-                playerOneLegs = 0;
-                playerOneLegsTotal.textContent = 0;
-                playerTwoLegs = 0;
-                playerTwoLegsTotal.textContent = 0;
-                resetLeg();
-                numberOfDartsPage.classList.remove('hidden');
-                gameOverPage.classList.add('hidden');
-
-                if (setsTotalAmount % 2 !== 0) {
-                    playerOne.classList.remove('active');
-                    playerTwo.classList.add('active');
-                } else {
-                    playerOne.classList.add('active');
-                    playerTwo.classList.remove('active');
-                }
-
-                legsTotalAmountInSet = 0;
-
-                // if total sets amount is reached
-                if (playerOneSets === numberOfSets) {
-
-                    numberOfDartsPage.classList.remove('hidden');
-                    gameOverPage.classList.remove('hidden');
-                    winnerMessage.textContent = `${playerOneNames[0].textContent} wins!`;
-
-                    setStats(playerOneScoreList, playerTwoScoreList);
-                }
-            }
-            /////////
-            ///////// accounting for legs ///////////
-            /////////
-            else if (playerOneLegs === numberOfLegs) {
-
-                numberOfDartsPage.classList.remove('hidden');
-                gameOverPage.classList.remove('hidden');
-                winnerMessage.textContent = `${playerOneNames[0].textContent} wins!`;
-
-                setStats(playerOneScoreList, playerTwoScoreList);
-
-            } else if (playerOneLegs !== numberOfLegs) {
-                numberOfDartsPage.classList.remove('hidden');
-                resetLeg();
-
-                console.log(legsTotalAmount);
-
-                if (setsTotalAmount % 2 === 0) {
-                    if (legsTotalAmountInSet % 2 !== 0) {
-                        playerOne.classList.remove('active');
-                        playerTwo.classList.add('active');
-                    } else {
-                        playerOne.classList.add('active');
-                        playerTwo.classList.remove('active');
-                    }
-                } else {
-                    if (legsTotalAmountInSet % 2 !== 0) {
-                        playerOne.classList.add('active');
-                        playerTwo.classList.remove('active');
-                    } else {
-                        playerOne.classList.remove('active');
-                        playerTwo.classList.add('active');
-                    }
-                }
-            }
-        }
-
-    }
-
-
-    /////////
-    ///////// CHANGE SCORES WHEN PLAYER 2 ACTIVE ///////////
-    ///////// 
-    else if (playerTwo.classList.contains('active')) {
-
-        // do not allow impossible finishes
-        for (let i = 0; i < impossibleFinishes.length; i++) {
-            if (parseInt(scoreInput.textContent) === impossibleFinishes[i] && playerTwoScore < 170) {
-                scoreInput.textContent = '';
-                invalidInputPage.classList.remove('hidden');
-                return;
-            }
-        }
-        // do not allow minus global score
-        if (playerTwoScore - parseInt(scoreInput.textContent) < 0) {
-            scoreInput.textContent = '';
-            invalidInputPage.classList.remove('hidden');
-            return;
-        }
-        // do not allow 1 remaining global score
-        if (playerTwoScore - parseInt(scoreInput.textContent) === 1) {
-            scoreInput.textContent = '';
-            invalidInputPage.classList.remove('hidden');
-            return;
-        }
-
-        // reset previous scores container html
-        previousScores.innerHTML = '';
-        
-        // calculate remaining score
-        const screenScore = playerTwo.querySelector('p');
-        const newScore = playerTwoScore - scoreInputValue;
-        // change score on screen
-        screenScore.textContent = newScore;
-        // change score in global variable
-        playerTwoScore = newScore;
-        // toggle active class
-        playerOne.classList.toggle('active');
-        playerTwo.classList.toggle('active');
-        // reset score input
-        scoreInput.textContent = '';
-
-
-        /////////
-        ///////// PREVIOUS SCORES PRODUCTION ///////////
-        /////////
-
-        // add score to score list array
-        playerTwoScoreList.unshift(scoreInputValue);
-        playerTwoScoreListInLeg.unshift(scoreInputValue);
-        
+        playerOneScoreList.unshift(0);
+        playerOneScoreListInLeg.unshift(0);
         previousScoresProducer(playerOneScoreListInLeg, playerTwoScoreListInLeg);
 
-
-        /////////
         ///////// AVERAGE SCORE PRODUCTION ///////////
-        /////////
+        setAverage(playerOneScoreList, turnAvgOne);
+        playerOneAverage = average;
 
+        ///////// ADD TOTAL DARTS ///////////
+        playerOneDartsTotal += 3;
+        playerOneDartsTotalInLeg +=3;
+
+    } else if (playerTwo.classList.contains('active')) {
+
+        ///////// PREVIOUS SCORES PRODUCTION ///////////
+        playerTwoScoreList.unshift(0);
+        playerTwoScoreListInLeg.unshift(0);
+        previousScoresProducer(playerOneScoreListInLeg, playerTwoScoreListInLeg);
+
+        ///////// AVERAGE SCORE PRODUCTION ///////////
         setAverage(playerTwoScoreList, turnAvgTwo);
-
         playerTwoAverage = average;
-        
 
-        /////////
-        ///////// POSSIBLE CHECKOUTS CONTAINER PRODUCTION ///////////
-        /////////
-        bestPossibleCheckout(playerTwoScore, checkoutTwo); 
-
-        // add total darts thrown
+        ///////// ADD TOTAL DARTS ///////////
         playerTwoDartsTotal += 3;
-        playerTwoDartsTotalInLeg += 3;
-        // dartsInLegTwo.textContent = playerTwoDartsTotalInLeg;
-
-        /////////
-        ///////// DEALING WITH WHEN 0 IS REACHED ///////////
-        /////////
-        if (playerTwoScore === 0) {
-
-            playerTwoLegs++;
-            playerTwoLegsTotal.textContent = playerTwoLegs;
-            legsTotalAmount++;
-            legsTotalAmountInSet++;
-
-            /////////
-            ///////// accounting for sets ///////////
-            /////////
-            if (playerTwoLegs === numberOfLegs && numberOfSets > 1) {
-                setsTotalAmount++;
-                playerTwoSets++;
-                playerTwoSetsTotal.textContent = playerTwoSets;
-                playerOneLegs = 0;
-                playerOneLegsTotal.textContent = 0;
-                playerTwoLegs = 0;
-                playerTwoLegsTotal.textContent = 0;
-                resetLeg();
-                numberOfDartsPage.classList.remove('hidden');
-                gameOverPage.classList.add('hidden');
-
-                if (setsTotalAmount % 2 !== 0) {
-                    playerOne.classList.remove('active');
-                    playerTwo.classList.add('active');
-                } else {
-                    playerOne.classList.add('active');
-                    playerTwo.classList.remove('active');
-                }
-
-                legsTotalAmountInSet = 0;
-
-                // if total sets amount is reached
-                if (playerTwoSets === numberOfSets) {
-
-                    numberOfDartsPage.classList.remove('hidden');
-                    gameOverPage.classList.remove('hidden');
-                    winnerMessage.textContent = `${playerTwoNames[0].textContent} wins!`;
-
-                    setStats(playerOneScoreList, playerTwoScoreList);
-                }
-            } 
-            /////////
-            ///////// accounting for legs ///////////
-            /////////
-            else if (playerTwoLegs === numberOfLegs) {
-
-                numberOfDartsPage.classList.remove('hidden');
-                gameOverPage.classList.remove('hidden');
-                winnerMessage.textContent = `${playerTwoNames[0].textContent} wins!`;
-
-                setStats(playerOneScoreList, playerTwoScoreList);
-
-            } else {
-                numberOfDartsPage.classList.remove('hidden');
-                resetLeg();
-
-                console.log(legsTotalAmount);
-
-                if (setsTotalAmount % 2 === 0) {
-                    if (legsTotalAmountInSet % 2 !== 0) {
-                        playerOne.classList.remove('active');
-                        playerTwo.classList.add('active');
-                    } else {
-                        playerOne.classList.add('active');
-                        playerTwo.classList.remove('active');
-                    }
-                } else {
-                    if (legsTotalAmountInSet % 2 !== 0) {
-                        playerOne.classList.add('active');
-                        playerTwo.classList.remove('active');
-                    } else {
-                        playerOne.classList.remove('active');
-                        playerTwo.classList.add('active');
-                    }
-                }
-            }
-        }
+        playerTwoDartsTotalInLeg +=3;
     }
 
-    // change quit button background color when certain player active
+    ///////// RESET SCORE INPUT VALUE ///////////
+    scoreInput.textContent = '';
+
+    playerOne.classList.toggle('active');
+    playerTwo.classList.toggle('active');
+
     quitBtnBgColor();
+}
 
-    // if (playerOne.classList.contains('active')) {
-    //     quitMatchBtn.style.backgroundColor = 'hsl( var(--color-primary), 0.5 )';
-    // } else {
-    //     quitMatchBtn.style.backgroundColor = 'hsl( var(--color-accent), 0.5 )';
-    // }
-})
+function startGame() {
+    homePage.classList.add('hidden');
+    quitBtnBgColor();
+    firstToAmountLegs.textContent = numberOfLegs;
+    firstToAmountSets.textContent = numberOfSets;
+}
 
-// FUNCTIONS
+function setName() {
+    if (nameToEdit === 'edit-name-player-one-btn') {
+        playerOneNames.forEach(name => {
+            name.textContent = editNameInput.value;
+        })
+        editNamePage.classList.add('hidden');
+        editNameInput.value = '';
+    }
+    if (nameToEdit === 'edit-name-player-two-btn') {
+        playerTwoNames.forEach(name => {
+            name.textContent = editNameInput.value;
+        })
+        editNamePage.classList.add('hidden');
+        editNameInput.value = '';
+    }
+}
+
+function setLegs(e) {
+    if (e.currentTarget.classList.contains('add')) {
+        numberOfLegs++;
+        numberOfLegsValue.textContent = numberOfLegs;
+    } else {
+        if (numberOfLegs === 1) return;
+        numberOfLegs--;
+        numberOfLegsValue.textContent = numberOfLegs;
+    }
+}
+
+function setSets(e) {
+    if (e.currentTarget.classList.contains('add')) {
+        numberOfSets++;
+        numberOfSetsValue.textContent = numberOfSets;
+    } else {
+        if (numberOfSets === 1) return;
+        numberOfSets--;
+        numberOfSetsValue.textContent = numberOfSets;
+    }
+}
+
+function setPoints(e) {
+    if (e.target.classList.contains('three-o-one')) {
+        pointsPicked = 301;
+    } else {
+        pointsPicked = 501;
+    }
+    playerOneScore = pointsPicked;
+    playerTwoScore = pointsPicked;
+    homePageScore.textContent = `${pointsPicked}`;
+    playerOneScoreValue.textContent = `${pointsPicked}`;
+    playerTwoScoreValue.textContent = `${pointsPicked}`;
+}
+
 function newGame() {
 
     playerOne.classList.add('active');
