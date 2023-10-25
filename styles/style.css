@@ -1,0 +1,62 @@
+body {
+  background: #e09bb4;
+  font-family: "Courier New", Courier, monospace;
+  color: white;
+  text-align: center;
+}
+
+ul {
+  width: 50%;
+  margin-inline: auto;
+  padding: 0;
+}
+
+span {
+  text-decoration: underline;
+}
+
+a {
+  color: inherit;
+  font-size: 20px;
+}
+
+.heading {
+  text-shadow: 3px 3px #222222;
+}
+
+#styled_bullets {
+  list-style-type: square;
+}
+
+.socials a {
+  text-decoration: none;
+}
+
+section {
+  padding: 1rem;
+  margin: 2rem;
+  background-color: rgb(1, 1, 94);
+}
+
+.skills-boxes {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.skills-box {
+  flex-basis: 25%;
+  background-color: gray;
+}
+
+@media screen and (min-width: 768px) {
+  .skills-boxes {
+    flex-direction: row;
+  }
+}
+
+.cover_letter img {
+  height: 280px;
+  width: 180px;
+}

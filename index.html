@@ -1,277 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Darts App!</title>
-    <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"
-      integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S"
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1"
+    />
+    <title>My CV</title>
+    <link rel="stylesheet" href="styles/style.css" />
+    <script
+      src="https://kit.fontawesome.com/3cfde07445.js"
       crossorigin="anonymous"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Open+Sans&family=Roboto:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    ></script>
   </head>
-  <body class="flex-col">
-    <!-- HOME PAGE -->
-    <div class="home-page">
-      <div class="home-page-header">
-        <h2 class="home-page-score fs-xlarge">501</h2>
-        <p class="fs-small">Lets Play Dartsss!</p>
-        <div class="game-score-pick flex">
-          <button class="three-o-one">301</button>
-          <button class="five-o-one">501</button>
+  <body>
+    <section class="hero">
+      <h1 class="heading">Jeffrey Vavasour</h1>
+      <a href="mailto:jeffreyvavasour@gmail.com">jeffreyvavasour@gmail.com</a>
+      <h3 class="heading">(458-789-5421)</h3>
+      <div class="socials">
+        <a
+          href="https://www.linkedin.com/in/jeffrey-vavasour-b98031175/"
+          target="_blank"
+        >
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a href="https://github.com/jeffreyvavasour" target="_blank">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </div>
+      <div class="cover_letter_link">
+        <a href="cover_letter.html">Cover Letter</a>
+      </div>
+    </section>
+    <section class="education">
+      <h2 class="heading">Education</h2>
+      <ul>
+        <li>
+          Higher Diploma in Science in Computing, <span>Web Development</span>
+        </li>
+        <li>BSC Honours in Applied Psychology</li>
+        <li>Leaving Certificate</li>
+      </ul>
+    </section>
+    <section class="skills">
+      <h2 class="heading">Skills</h2>
+      <div class="skills-boxes">
+        <div class="skills-box">
+          <ul>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+          </ul>
+        </div>
+        <div class="skills-box">
+          <ul id="styled_bullets">
+            <li>Git</li>
+            <li>Bootstrap</li>
+            <li>Sass</li>
+          </ul>
+        </div>
+        <div class="skills-box">
+          <ul>
+            <li>Java</li>
+            <li>OOP</li>
+            <li>React</li>
+          </ul>
         </div>
       </div>
-      <div class="first-to-home fs-medium">
-        <div class="container-first-to-home">
-          <h4 class="first-to-heading">First to</h4>
-          <div class="legs flex">
-            <p class="fs-small">Legs</p>
-            <div class="legs-counter flex">
-              <button class="minus leg-btn">-</button>
-              <p class="number-of-legs fs-small">1</p>
-              <button class="add leg-btn">+</button>
-            </div>
-          </div>
-          <div class="sets flex">
-            <p class="fs-small">Sets</p>
-            <div class="sets-counter flex">
-              <button class="minus set-btn">-</button>
-              <p class="number-of-sets fs-small">1</p>
-              <button class="add set-btn">+</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="participants">
-        <h4>Participants</h4>
-        <div class="player-name-div flex">
-          <p class="player-one-name fs-small">Player 1</p>
-          <button class="edit-name-btn" id="edit-name-player-one-btn">
-            <i class="fa fa-edit"></i>
-          </button>
-        </div>
-        <div class="player-name-div flex">
-          <p class="player-two-name fs-small">Player 2</p>
-          <button class="edit-name-btn" id="edit-name-player-two-btn">
-            <i class="fa fa-edit"></i>
-          </button>
-        </div>
-      </div>
-      <div class="start-game">
-        <button class="start-game-btn">Start</button>
-      </div>
-    </div>
+    </section>
+    <section class="experience">
+      <h2 class="heading">Experience</h2>
+      <p>
+        Experience working with clients to build websites for them.
+        Communication to figure out exact goal and use cases for the website.
+        Delivering websites in certain time frames using <strong>html</strong>,
+        <strong>css</strong>, and <strong>javascript</strong>. Version control
+        of applications with <strong>git</strong> and
+        <strong>deployment</strong> of websites.
+      </p>
+    </section>
+    <a href="#more_info">Click Me for more info!</a>
 
-    <!-- GAME PAGE -->
-    <!-- quit button -->
-    <div class="quit-btn-div">
-      <button class="quit-btn">X</button>
-    </div>
-    <!-- scores -->
-    <div class="scores flex">
-      <div class="score player-one center-item even-cols active">
-        <h4 class="player-one-heading player-one-name fs-xxsmall">Player 1</h4>
-        <p class="player-one-score fs-xlarge">501</p>
-      </div>
-      <div class="score player-two center-item even-cols">
-        <h4 class="player-two-heading player-two-name fs-xxsmall">Player 2</h4>
-        <p class="player-two-score fs-xlarge">501</p>
-      </div>
-    </div>
-    <!-- info -->
-    <div class="info">
-      <!-- first to -->
-      <div class="first-to">
-        <div class="first-to-content flex">
-          <p class="fs-xxsmall">
-            First to: Sets <span class="first-to-amount-sets">3</span> /&nbsp
-          </p>
-          <p class="fs-xxsmall">
-            Legs <span class="first-to-amount-legs">3</span>
-          </p>
-        </div>
-      </div>
-      <!-- first to
-            <div class="first-to flex">
-                first to amount legs
-                <div class="first-to-container center-item">
-                    <p class="fs-xxsmall">First to: <span class="first-to-amount-legs">3</span> (Legs)</p>
-                </div>
-                first to amount sets
-                <div class="first-to-container center-item">
-                    <p class="fs-xxsmall">First to: <span class="first-to-amount-sets">3</span> (Sets)</p>
-                </div>
-            </div> -->
-      <!-- turn average -->
-      <div class="turn-average-container flex">
-        <div class="turn-average even-cols center-item">
-          <p class="fs-xxsmall">
-            Turn Avg: <span class="turn-average-one">0</span>
-          </p>
-        </div>
-        <div class="turn-average even-cols center-item">
-          <p class="fs-xxsmall">
-            Turn Avg: <span class="turn-average-two">0</span>
-          </p>
-        </div>
-      </div>
-      <!-- darts in leg -->
-      <!-- <div class="darts-in-leg-container flex">
-                <div class="darts-in-leg even-cols center-item">
-                    <p class="fs-xxsmall">Darts In Leg: <span class="darts-in-leg-one">0</span></p>
-                </div>
-                <div class="darts-in-leg even-cols center-item">
-                    <p class="fs-xxsmall">Darts In Leg: <span class="darts-in-leg-two">0</span></p>
-                </div>
-            </div> -->
-      <!-- number of legs won -->
-      <div class="legs-won-container flex">
-        <div class="legs-won even-cols center-item">
-          <p class="fs-xxsmall">
-            <span class="sets-won-one">0</span> Sets -&nbsp<span
-              class="legs-won-one"
-              >0</span
-            >
-            Legs
-          </p>
-        </div>
-        <div class="legs-won even-cols center-item">
-          <p class="fs-xxsmall">
-            <span class="sets-won-two">0</span> Sets -&nbsp<span
-              class="legs-won-two"
-              >0</span
-            >
-            Legs
-          </p>
-        </div>
-      </div>
-      <!-- number of sets won -->
-      <!-- <div class="sets-won-container flex">
-                <div class="sets-won even-cols center-item">
-                    <p class="fs-xxsmall">Sets Won: <span class="sets-won-one">0</span></p>
-                </div>
-                <div class="sets-won even-cols center-item">
-                    <p class="fs-xxsmall">Sets Won: <span class="sets-won-two">0</span></p>
-                </div>
-            </div> -->
-    </div>
-    <!-- previous scores -->
-    <div class="previous-scores-container flex"></div>
-    <!-- possible checkouts -->
-    <div class="checkouts-container flex">
-      <div class="checkout even-cols center-item">
-        <p><span class="checkout-one"></span></p>
-      </div>
-      <div class="checkout even-cols center-item">
-        <p><span class="checkout-two"> </span></p>
-      </div>
-    </div>
-    <!-- container -->
-    <div class="container">
-      <!-- buttons && score input -->
-      <div class="buttons flex">
-        <!-- quit match button -->
-        <div class="quit-match-btn-section grid center-item invisible">
-          <button class="quit-match-btn">Quit</button>
-        </div>
-        <!-- score input -->
-        <div class="score-input flex">
-          <p type="text" class="score-input-value"></p>
-        </div>
-        <!-- submit button -->
-        <div class="submit-section grid center-item">
-          <button class="submit-btn">OK</button>
-        </div>
-      </div>
-    </div>
-    <!-- container keys -->
-    <div class="container-keys">
-      <!-- keypad -->
-      <div class="keys grid">
-        <button class="key number center-item">1</button>
-        <button class="key number center-item">2</button>
-        <button class="key number center-item">3</button>
-        <button class="key number center-item">4</button>
-        <button class="key number center-item">5</button>
-        <button class="key number center-item">6</button>
-        <button class="key number center-item">7</button>
-        <button class="key number center-item">8</button>
-        <button class="key number center-item">9</button>
-        <button class="key bust center-item">Bust</button>
-        <button class="key number center-item">0</button>
-        <button class="key backspace center-item">
-          <i class="fa fa-arrow-left"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- INVALID INPUT PAGE -->
-    <div class="invalid-input-page modal hidden">
-      <div class="invalid-input-page-popup modal-popup">
-        <div class="modal-content">
-          <h4>Invalid Input</h4>
-          <button class="invalid-input-btn">OK</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- NUMBER OF DARTS PAGE -->
-    <div class="number-of-darts-page modal hidden">
-      <div class="number-of-darts-page-popup modal-popup">
-        <div class="modal-content">
-          <h4>Throws</h4>
-          <p>How many darts did it take to finish?</p>
-          <button class="number-of-darts one-dart">1</button>
-          <button class="number-of-darts two-darts">2</button>
-          <button class="number-of-darts three-darts">3</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ARE YOU SURE PAGE -->
-    <div class="are-you-sure-page modal hidden">
-      <div class="are-you-sure-page-popup modal-popup">
-        <div class="modal-content">
-          <h4>Are You Sure You Want To Quit The Match?</h4>
-          <button class="quit-match-confirm-btn">Yes</button>
-          <button class="quit-match-deny-btn">No</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- GAME OVER PAGE -->
-    <div class="game-over-page modal hidden">
-      <div class="game-over-page-popup modal-popup">
-        <div class="modal-content">
-          <p class="winner"></p>
-          <button class="play-again-btn">Play Again</button>
-          <button class="game-stats-btn">Game Statistics</button>
-          <button class="home-btn">Home</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- STATISTICS PAGE -->
-    <div class="stats-page hidden"></div>
-
-    <!-- EDIT NAME PAGE -->
-    <div class="edit-name-page modal hidden">
-      <div class="edit-name-page-popup modal-popup">
-        <div class="modal-content">
-          <h4>Add Player Name</h4>
-          <input type="text" class="edit-name-input" maxlength="12" />
-          <button class="edit-name-confirm-btn">SUBMIT</button>
-        </div>
-      </div>
-    </div>
-
-    <script src="app-four.js"></script>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <section class="more-info">
+      <h2 id="more_info" class="heading">More Info</h2>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur
+        ullam quasi ipsam ea illum mollitia fuga ipsum! Vero at quo nihil
+        voluptatum dolorum itaque fugiat nisi exercitationem sunt dolore
+        voluptas ullam hic aliquid magnam tempora error, tempore eos sint
+        voluptate alias accusamus consectetur quos necessitatibus veniam!
+        Doloribus, harum pariatur. Assumenda.
+      </p>
+    </section>
   </body>
 </html>
